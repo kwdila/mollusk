@@ -138,6 +138,11 @@ static BUILTINS: &[Builtin] = &[
         name: "solana_bpf_loader_upgradeable_program",
         entrypoint: solana_bpf_loader_program::Entrypoint::vm,
     },
+    Builtin {
+        program_id: solana_vote_program::id(),
+        name: "solana_vote_program",
+        entrypoint: solana_vote_program::vote_processor::Entrypoint::vm,
+    },
     #[cfg(feature = "all-builtins")]
     Builtin {
         program_id: solana_sdk::stake::program::id(),
@@ -167,6 +172,11 @@ pub fn create_keyed_account_for_builtin_program(
 /// Get the key and account for the system program.
 pub fn keyed_account_for_system_program() -> (Pubkey, Account) {
     create_keyed_account_for_builtin_program(&BUILTINS[0].program_id, BUILTINS[0].name)
+}
+
+/// Get the key and account for the vote program.
+pub fn keyed_account_for_vote_program() -> (Pubkey, Account) {
+    create_keyed_account_for_builtin_program(&BUILTINS[3].program_id, BUILTINS[3].name)
 }
 
 /// Get the key and account for the BPF Loader v2 program.

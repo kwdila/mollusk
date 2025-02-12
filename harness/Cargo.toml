@@ -11,17 +11,9 @@ version = { workspace = true }
 
 [features]
 default = []
-all-builtins = [
-    "dep:solana-stake-program",
-]
-fuzz = [
-    "dep:mollusk-svm-fuzz-fixture",
-    "dep:mollusk-svm-fuzz-fs",
-]
-fuzz-fd = [
-    "dep:mollusk-svm-fuzz-fixture-firedancer",
-    "dep:mollusk-svm-fuzz-fs",
-]
+all-builtins = ["dep:solana-stake-program"]
+fuzz = ["dep:mollusk-svm-fuzz-fixture", "dep:mollusk-svm-fuzz-fs"]
+fuzz-fd = ["dep:mollusk-svm-fuzz-fixture-firedancer", "dep:mollusk-svm-fuzz-fs"]
 serde = ["dep:serde"]
 
 [dependencies]
@@ -39,6 +31,7 @@ solana-logger = { workspace = true }
 solana-program-runtime = { workspace = true }
 solana-stake-program = { workspace = true, optional = true }
 solana-system-program = { workspace = true }
+solana-vote-program = { workspace = true }
 solana-sdk = { workspace = true }
 solana-timings = { workspace = true }
 
