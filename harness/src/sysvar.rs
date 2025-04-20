@@ -1,5 +1,6 @@
 //! Module for working with Solana sysvars.
 
+use solana_sdk::sysvar::auction_verifiers::AuctionVerifiers;
 use {
     solana_program_runtime::sysvar_cache::SysvarCache,
     solana_sdk::{
@@ -27,6 +28,7 @@ pub struct Sysvars {
     pub rent: Rent,
     pub slot_hashes: SlotHashes,
     pub stake_history: StakeHistory,
+    pub auction_verifiers: AuctionVerifiers,
 }
 
 impl Default for Sysvars {
@@ -43,6 +45,9 @@ impl Default for Sysvars {
             SlotHashes::new(&default_slot_hashes)
         };
 
+        let auction_verifiers = AuctionVerifiers::default();
+
+
         let mut stake_history = StakeHistory::default();
         stake_history.add(clock.epoch, StakeHistoryEntry::default());
 
@@ -54,6 +59,7 @@ impl Default for Sysvars {
             rent,
             slot_hashes,
             stake_history,
+            auction_verifiers
         }
     }
 }
@@ -181,6 +187,9 @@ impl Sysvars {
             if pubkey.eq(&StakeHistory::id()) {
                 set_sysvar(&bincode::serialize(&self.stake_history).unwrap());
             }
+            if pubkey.eq(&AuctionVerifiers::id()) {
+                set_sysvar(&bincode::serialize(&self.auction_verifiers).unwrap());
+            }
         });
 
         sysvar_cache
@@ -211,6 +220,9 @@ impl From<&Sysvars> for SysvarCache {
             }
             if pubkey.eq(&StakeHistory::id()) {
                 set_sysvar(&bincode::serialize(&mollusk_cache.stake_history).unwrap());
+            }
+            if pubkey.eq(&AuctionVerifiers::id()) {
+                set_sysvar(&bincode::serialize(&mollusk_cache.auction_verifiers).unwrap());
             }
         });
         sysvar_cache
@@ -288,6 +300,7 @@ mod tests {
             rent,
             slot_hashes,
             stake_history,
+            auction_verifiers: Default::default(),
         };
 
         let sysvar_cache: SysvarCache = (&sysvars).into();
